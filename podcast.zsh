@@ -7,7 +7,7 @@ showUsage ()
 }
 
 
-if [ $# < 1 ]
+if [[ $# < 1 ]]
 then
     showUsage
     exit
