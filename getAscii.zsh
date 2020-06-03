@@ -31,9 +31,10 @@ then
 else 
   
   echo "$1 is not jpeg, converting now..."
-
+  thumbnail="$dirname/$file.jpg"
+  sips -s format jpeg $1 --out "$dirname/$file.jpg" > /dev/null
 fi
 
-
+jp2a --width=50 --colors $thumbnail 
 
 
