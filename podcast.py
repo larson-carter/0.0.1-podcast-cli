@@ -32,7 +32,7 @@ class PodcastEpisode:
         return f"(PodcastEpisode) id={self.id} , path={self.path} , title={self.title}"
 
 
-def fetch_podcasts(username: str) -> List[PodcastEpisode]:
+def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     '''
     Fetches a list of podcasts from the dev.to API.
 
@@ -70,9 +70,9 @@ def save(podcast_file):
 # this will come from ZSH, I guess. For now, let's just use input().
 query_entered_by_the_user = input("Enter podcast name: ").lower()
 # this might also come from ZSH side (?)
-podcast_episode_name = input("Enter podcast episode name: ").lower()
+podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
 
-episodes = fetch_podcasts(query_entered_by_the_user)
+episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 
 
 best_match_value = 0
