@@ -1,5 +1,7 @@
 import requests
 import json
+import random
+
 from typing import List
 from string_distance import recursive_levenshtein
 
@@ -31,6 +33,23 @@ class PodcastEpisode:
     def __str__(self):
         return f"(PodcastEpisode) id={self.id} , path={self.path} , title={self.title}"
 
+def parse_podcast_data(data):
+    '''
+    reusable method parses podcast json data returned by Dev.to API
+    returns array of PodcastEpisode objects.
+    '''
+    podcast_episodes = []
+    if not data:
+        print("data is None. Something bad happened")
+
+    for podcast_data in data:
+        podcast_episode = PodcastEpisode(
+            podcast_data["id"], podcast_data["path"], podcast_data["title"].lower()
+        )
+
+        podcast_episodes.append(podcast_episode)
+
+    return podcast_episodes
 
 def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     '''
@@ -45,18 +64,27 @@ def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
         f"https://dev.to/api/podcast_episodes?username={username}")
     data = json.loads(response.text)
 
-    podcast_episodes = []
-    if not data:
-        print("data is None. Something bad happened")
+    # podcast_episodes = []
+    # if not data:
+    #     print("data is None. Something bad happened")
+    #
+    # for podcast_data in data:
+    #     podcast_episode = PodcastEpisode(
+    #         podcast_data["id"], podcast_data["path"], podcast_data["title"].lower()
+    #     )
+    #
+    #     podcast_episodes.append(podcast_episode)
 
-    for podcast_data in data:
-        podcast_episode = PodcastEpisode(
-            podcast_data["id"], podcast_data["path"], podcast_data["title"].lower()
-        )
+    #return podcast_episodes
+    return parse_podcast_data(data)
 
-        podcast_episodes.append(podcast_episode)
+def fetch_random_podcast():
+    '''
+    fetches podcasts via Dev.to API call w/no search param. Returns a single
+    random podcast episode from list of episodes returned by API.
+    '''
 
-    return podcast_episodes
+    pass
 
 
 def save(podcast_file):
@@ -65,6 +93,9 @@ def save(podcast_file):
     e.g mp3-files2/ like in the shell script written by The Shell Guys.
     '''
     pass
+
+
+# TESTING CODE BELOW
 
 
 # this will come from ZSH, I guess. For now, let's just use input().
