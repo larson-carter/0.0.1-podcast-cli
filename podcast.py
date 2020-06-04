@@ -4,6 +4,7 @@ import random
 
 from typing          import List
 from string_distance import recursive_levenshtein
+from download        import download_podcast
 
 # Link to the branch where work on this is happening: https://github.com/MLH-Fellowship/0.0.1-podcast-cli/tree/feat/use-python
 
@@ -123,7 +124,8 @@ def most_recent_podcast(list):
     return list[0]
 
 
-def save(podcast_file):
+def save(url_path, destination):
+
     '''
     This will save the downloaded podcast file to "some" directory.
     e.g mp3-files2/ like in the shell script written by The Shell Guys.
