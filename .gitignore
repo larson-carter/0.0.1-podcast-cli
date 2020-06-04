@@ -1,3 +1,8 @@
 *.DS_Store
-mp3-files2/
+mp3-files2/*
 .vscode/
+venv
+.idea/*
+images/*
+__pycache__/
+mp3_files/*
