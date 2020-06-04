@@ -137,7 +137,7 @@ def save(podcast_file):
     pass
 
 
-def path_to_filepath(short_path: str, img_format="jpg", base_img_dir=IMG_DIR)-> str:
+def path_to_filepath(short_path: str, img_format="jpg", base_img_dir=IMG_DIR)-> (str, str):
     """:arg
     Given a dev.to short path, returns
     (1) a folder name (so it can be created) and
@@ -186,7 +186,10 @@ def download_img(short_path: str, img_url: str):
 
 
 
-
+if __name__ == "__main__":
+    path = "/devjourneyfm/103-carolyn-stransky-learning-her-way-from-journalist-to-developer-and-back"
+    img_url = "https://dev-to-uploads.s3.amazonaws.com/uploads/podcast/image/144/98875407-b714-4598-9475-b156defc5081.png"
+    download_img(path, img_url)
 # TESTING CODE BELOW- uncomment relevant piece to test functionality
 # --------------------
 
