@@ -1,7 +1,12 @@
 *.DS_Store
 mp3-files2/
 .vscode/
+
+venv/
 __pycache__/
-mp3_filesz/
-my_custom_dir/
-test_py_download/
+mp3-files2/*
+.vscode/
+.idea/*
+images/*
+mp3_files/*
+
