@@ -2,7 +2,7 @@ import requests
 import json
 import random
 
-from typing import List
+from typing          import List
 from string_distance import recursive_levenshtein
 
 # Link to the branch where work on this is happening: https://github.com/MLH-Fellowship/0.0.1-podcast-cli/tree/feat/use-python
@@ -83,6 +83,13 @@ def fetch_random_podcast():
 
     return random_episode
 
+def most_recent_podcast(list):
+    '''
+    returns most recent podcast in a list of PodcastEpisodes
+    according to Dev.to response, this will be first in list
+    '''
+    return list[0]
+
 
 def save(podcast_file):
     '''
@@ -101,15 +108,25 @@ def save(podcast_file):
 # episode = fetch_random_podcast()
 # print(episode.title)
 
-# RETURNING PODCAST BY PODCAST TITLE AND/OR EPISODE NAME
-#------------------------------------------------------
+# RETURNING PODCASTS BY PODCAST TITLE
+#------------------------------------
 # this will come from ZSH, I guess. For now, let's just use input().
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
-# this might also come from ZSH side (?)
-# podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
-
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 
+# RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
+#--------------------------------------------------
+query_entered_by_the_user = input("Enter podcast name: ").lower()
+episodes = fetch_podcasts_by_title(query_entered_by_the_user)
+most_recent_episode = most_recent_podcast(episodes)
+print(most_recent_episode.title)
+
+
+# RETURNING PODCAST BY PODCAST TITLE WITH EPISODE TITLE OF ___
+#-------------------------------------------------------------
+# this might also come from ZSH side (?)
+# podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
+#
 # best_match_value = 0
 # episode_with_best_match = None
 #
