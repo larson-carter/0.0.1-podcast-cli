@@ -26,11 +26,11 @@ fi
 
 if [[ $(file -b $1) =~ JPEG ]];  
 then 
-  echo "$1 is a jpeg, no need for conversion"
+  # echo "$1 is a jpeg, no need for conversion"
   thumbnail=$1
 else 
   
-  echo "$1 is not jpeg, converting now..."
+  # echo "$1 is not jpeg, converting now..."
   thumbnail="$dirname/$file.jpg"
   sips -s format jpeg $1 --out "$dirname/$file.jpg" > /dev/null
 fi

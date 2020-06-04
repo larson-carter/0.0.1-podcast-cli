@@ -271,7 +271,7 @@ def podcast_info(short_path: str):
         print(INFO_WIDTH * "=")
         print(raw_title)
         print(INFO_WIDTH * "=")
-        print(ep_title)
+        print(f"Episode title: {ep_title}")
         print(INFO_WIDTH * "=")
 
 
