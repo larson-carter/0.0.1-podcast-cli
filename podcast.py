@@ -58,7 +58,7 @@ def fetch_all_podcasts():
     no search param included
     '''
     response = requests.get(
-        "https://dev.to/api/podcast_episodes")
+        "https://dev.to/api/podcast_episodes?per_page=1000")
     data = json.loads(response.text)
 
     return parse_podcast_data(data)
@@ -73,15 +73,29 @@ def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     '''
     username = username.strip().replace(" ", "")
     response = requests.get(
-        f"https://dev.to/api/podcast_episodes?username={username}")
+        f"https://dev.to/api/podcast_episodes?per_page=1000&username={username}")
     data = json.loads(response.text)
 
     return parse_podcast_data(data)
 
 
-def fetch_podcast_by_keyword(keyword: str):
+#  we can edit this to search the description as well.
+#  a title search may be effective enough
+#  this func returns a list.  If we want just the most recent one, we can
+# invoke most_recent_podcast on the return val of this func.
+def fetch_podcasts_by_keyword(keyword: str):
+    '''
+    accepts a string argument, key word
+    returns list of PodcastEpisode object with that keyword in the title.
+    if none, displays message.
+    '''
 
-     return keyword
+    podcast_episode_list = fetch_all_podcasts()
+
+    for episode in podcast_episode_list:
+        print(episode.title)
+
+    return keyword
 
 
 def fetch_random_podcast():
@@ -116,8 +130,14 @@ def save(podcast_file):
 
 # GENERATING RANDOM PODCAST
 #----------------------------
-episode = fetch_random_podcast()
-print(episode.title)
+# episode = fetch_random_podcast()
+# print(episode.title)
+
+
+# RETURNING ALL PODCASTS
+#-----------------------
+episodes = fetch_all_podcasts()
+print(len(episodes))
 
 
 # RETURNING PODCASTS BY PODCAST TITLE
@@ -126,12 +146,14 @@ print(episode.title)
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 
-# FETCH PODCAST BY KEYWORD
-#-----------------------------------
-keyword = input("Enter a keyword to search by: ").lower()
-returned_podcast = fetch_podcast_by_keyword(keyword)
 
-print(returned_podcast)
+# FETCH PODCASTS BY KEYWORD
+#-----------------------------------
+# keyword = input("Enter a keyword to search by: ").lower()
+# returned_podcast = fetch_podcasts_by_keyword(keyword)
+#
+# print(returned_podcast)
+
 
 # RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
 #--------------------------------------------------
