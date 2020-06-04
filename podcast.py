@@ -200,6 +200,7 @@ def download_img(short_path: str, img_url: str):
 
     Returns nothing
     """
+    # TODO: handle conversion here
     img_format = img_url.split(".")[-1]
     folder, file_path = path_to_filepath(short_path, img_format)
 
@@ -221,8 +222,10 @@ def download_img(short_path: str, img_url: str):
 
 
 def podcast_info(short_path: str):
-    pass
 
+    folder, file_path = path_to_filepath(short_path)
+    COMMAND = f"zsh getAscii.zsh {file_path}"
+    os.system(COMMAND)
 
 if __name__ == "__main__":
     if sys.argv[1] == "search":
@@ -255,7 +258,7 @@ if __name__ == "__main__":
         for episode in podcasts:
             print_podcast(episode)
 
-    elif sys.argv[1] == "info": 
+    elif sys.argv[1] == "info":
         podcast_info(sys.argv[2])
 
 

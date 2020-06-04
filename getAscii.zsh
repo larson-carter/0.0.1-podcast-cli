@@ -35,6 +35,6 @@ else
   sips -s format jpeg $1 --out "$dirname/$file.jpg" > /dev/null
 fi
 
-jp2a --width=50 --colors $thumbnail 
+jp2a --width=80 --colors $thumbnail
 
 
