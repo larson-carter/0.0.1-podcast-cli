@@ -12,8 +12,8 @@ from string_distance import recursive_levenshtein
 # I think string matching can be improved (or rather fixed) using Dice Coefficient.
 # This npm module I use (and it works perfectly) uses Dice Coefficient: https://www.npmjs.com/package/string-similarity.
 # This whole thing might also be unnecessary. Consulting with The Shell Guys advised.
-print(recursive_levenshtein("bartek pacia", "bartk pcia"))
-print(recursive_levenshtein("bartek pacia", "bartek paci"))
+# print(recursive_levenshtein("bartek pacia", "bartk pcia"))
+# print(recursive_levenshtein("bartek pacia", "bartek paci"))
 
 
 class PodcastEpisode:
@@ -52,6 +52,16 @@ def parse_podcast_data(data):
 
     return podcast_episodes
 
+def fetch_all_podcasts():
+    '''
+    fetches all podcasts available via Dev.to API input
+    no search param included
+    '''
+    response = requests.get(
+        "https://dev.to/api/podcast_episodes")
+    data = json.loads(response.text)
+
+    return parse_podcast_data(data)
 
 def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     '''
@@ -69,16 +79,18 @@ def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     return parse_podcast_data(data)
 
 
+def fetch_podcast_by_keyword(keyword: str):
+
+     return keyword
+
+
 def fetch_random_podcast():
     '''
     fetches podcasts via Dev.to API call w/no search param. Returns a single
     random podcast episode from list of episodes returned by API.
     '''
 
-    response = requests.get(
-        "https://dev.to/api/podcast_episodes")
-    data = json.loads(response.text)
-    podcast_episode_list = parse_podcast_data(data)
+    podcast_episode_list = fetch_all_podcasts()
     random_episode = random.choice(podcast_episode_list)
 
     return random_episode
@@ -99,14 +111,14 @@ def save(podcast_file):
     pass
 
 
-# TESTING CODE BELOW
+# TESTING CODE BELOW- uncomment relevant piece to test functionality
 #--------------------
-# uncomment relevant piece to test functionality
 
 # GENERATING RANDOM PODCAST
 #----------------------------
-# episode = fetch_random_podcast()
-# print(episode.title)
+episode = fetch_random_podcast()
+print(episode.title)
+
 
 # RETURNING PODCASTS BY PODCAST TITLE
 #------------------------------------
@@ -114,12 +126,19 @@ def save(podcast_file):
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 
+# FETCH PODCAST BY KEYWORD
+#-----------------------------------
+keyword = input("Enter a keyword to search by: ").lower()
+returned_podcast = fetch_podcast_by_keyword(keyword)
+
+print(returned_podcast)
+
 # RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
 #--------------------------------------------------
-query_entered_by_the_user = input("Enter podcast name: ").lower()
-episodes = fetch_podcasts_by_title(query_entered_by_the_user)
-most_recent_episode = most_recent_podcast(episodes)
-print(most_recent_episode.title)
+# query_entered_by_the_user = input("Enter podcast name: ").lower()
+# episodes = fetch_podcasts_by_title(query_entered_by_the_user)
+# most_recent_episode = most_recent_podcast(episodes)
+# print(most_recent_episode.title)
 
 
 # RETURNING PODCAST BY PODCAST TITLE WITH EPISODE TITLE OF ___
