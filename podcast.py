@@ -77,7 +77,7 @@ def fetch_all_podcasts():
 def get_metadata():
     print("[Initialization] Downloading Metadata... This will open happen once")
 
-    # map = dict()
+    map = dict()
     response = requests.get(
         f"https://dev.to/api/podcast_episodes?per_page=100000")
     data = json.loads(response.text)
