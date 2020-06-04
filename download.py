@@ -12,7 +12,7 @@ def download_podcast(directory, url_path):
     '''
     full_url = f"https://dev.to/{url_path}"
     res = requests.get(full_url)
-
+    file_path = f"{directory}/{url_path}.mp3"
     if res.status_code != 200:
         print(f"Status Code: {res.status_code} for {full_url}")
         exit(1)
@@ -28,7 +28,9 @@ def download_podcast(directory, url_path):
     opener = urllib.request.build_opener()
     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
     urllib.request.install_opener(opener)
-    return urllib.request.urlretrieve(full_url, f"{directory}/{url_path}")
+    print("Downloading... this might take a few seconds depending on internet connection")
+    urllib.request.urlretrieve(mp3_url, file_path)
+    print(f"File saved in {file_path}")
 
 
 def create_dir(directory):
@@ -43,7 +45,6 @@ def create_dir(directory):
 if __name__ == "__main__":
     # print(len(sys.argv))
     directory = os.path.expanduser("~/podcasts/mp3_files")
-    print(directory)
     create_dir(directory)
     podcast_name, episode_name = os.path.split(sys.argv[1]) 
     if podcast_name != None:
