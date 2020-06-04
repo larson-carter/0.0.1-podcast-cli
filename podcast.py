@@ -1,8 +1,10 @@
 import requests
 import json
 import random
+import sys
 import shutil
 import os
+
 from typing import List
 from string_distance import recursive_levenshtein
 
@@ -31,7 +33,7 @@ class PodcastEpisode:
 
     def __init__(self, id, path, title):
         self.id = id
-        self.path = f"https://dev.to{path}"
+        self.path = path
         self.title = title
 
     def __str__(self):
@@ -93,7 +95,6 @@ def fetch_podcasts_by_keyword(keyword: str):
     '''
     accepts a string argument, key word
     returns list of PodcastEpisode object with that keyword in the title.
-    if none, displays message.
     '''
 
     keyword_title_matches = []
@@ -103,10 +104,7 @@ def fetch_podcasts_by_keyword(keyword: str):
         if keyword in episode.title.split():
             keyword_title_matches.append(episode)
 
-    if len(keyword_title_matches) > 0:
-        return keyword_title_matches
-    else:
-        print('No keyword title matches')
+    return keyword_title_matches
 
 
 def fetch_random_podcast():
@@ -119,6 +117,20 @@ def fetch_random_podcast():
     random_episode = random.choice(podcast_episode_list)
 
     return random_episode
+
+
+def fetch_paginated_podcasts(page, per_page):
+    '''
+    fetches podcasts page by page
+
+    - Precondition: page and per_page are integers or numeric strings
+    '''
+    
+    response = requests.get(
+        f"https://dev.to/api/podcast_episodes?page={page}&per_page={per_page}")
+    data = json.loads(response.text)
+
+    return parse_podcast_data(data)
 
 
 def most_recent_podcast(list):
@@ -135,6 +147,28 @@ def save(podcast_file):
     e.g mp3-files2/ like in the shell script written by The Shell Guys.
     '''
     pass
+
+
+def text_format(text, width):
+    ''' 
+    Returns a string with a length exactly equal to width. 
+    If the original text is shorter than width, spaces are appended
+    If the original text is longer than width, it is truncated with ellipses
+
+    - Precondition: width > 3
+    '''
+    if len(text) <= width:
+        text += ' ' * (width - len(text))
+    else:
+        text = text[:width - 3] + "..."
+        
+    assert len(text) == width
+    return text
+
+def print_podcast(podcast):
+    title = text_format(podcast.title, 60)
+    path = podcast.path
+    print(f"{title}\t{path}")
 
 
 def path_to_filepath(short_path: str, img_format="jpg", base_img_dir=IMG_DIR)-> (str, str):
@@ -155,7 +189,6 @@ def path_to_filepath(short_path: str, img_format="jpg", base_img_dir=IMG_DIR)-> 
     filepath_out = f"{folder}/{filename}.{img_format}"
 
     return folder, filepath_out
-
 
 
 def download_img(short_path: str, img_url: str):
@@ -185,11 +218,45 @@ def download_img(short_path: str, img_url: str):
             print("Image successfully download:", file_path)
 
 
+def podcast_info(short_path: str):
+    pass
+
 
 if __name__ == "__main__":
-    path = "/devjourneyfm/103-carolyn-stransky-learning-her-way-from-journalist-to-developer-and-back"
-    img_url = "https://dev-to-uploads.s3.amazonaws.com/uploads/podcast/image/144/98875407-b714-4598-9475-b156defc5081.png"
-    download_img(path, img_url)
+    if sys.argv[1] == "search":
+        keyword = sys.argv[2].lower()
+        podcasts = fetch_podcasts_by_keyword(keyword)
+        for episode in podcasts:
+            print_podcast(episode)          
+    
+    elif sys.argv[1] == "random":
+        print_podcast(fetch_random_podcast())
+
+    elif sys.argv[1] == "list":
+        try:
+            # check that the arguments are numeric
+            val = int(sys.argv[2])
+            if val < 0:
+                print("podast list: please enter a positive integer for the page number")
+                sys.exit(1)
+            
+            val = int(sys.argv[3])
+            if val < 0:
+                print("podast list: please enter a positive integer for the number of podcasts per page")
+                sys.exit(1)
+        
+        except ValueError:
+            print("podcast list: please enter an integer for the page number and podcasts per page") 
+            sys.exit(1)
+            
+        podcasts = fetch_paginated_podcasts(sys.argv[2], sys.argv[3])
+        for episode in podcasts:
+            print_podcast(episode)
+
+    elif sys.argv[1] == "info": 
+        podcast_info(sys.argv[2])
+
+
 # TESTING CODE BELOW- uncomment relevant piece to test functionality
 # --------------------
 
