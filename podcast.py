@@ -52,9 +52,10 @@ def parse_podcast_data(data):
 
     return podcast_episodes
 
+
 def fetch_all_podcasts():
     '''
-    fetches all podcasts available via Dev.to API input
+    fetches all podcasts available (up to 1000 most recent) via Dev.to API input
     no search param included
     '''
     response = requests.get(
@@ -63,9 +64,10 @@ def fetch_all_podcasts():
 
     return parse_podcast_data(data)
 
+
 def fetch_podcasts_by_title(username: str) -> List[PodcastEpisode]:
     '''
-    Fetches a list of podcasts from the dev.to API.
+    Fetches a list of podcasts from the dev.to API. (up to 1000)
 
     Parameters
     ----------
@@ -90,12 +92,17 @@ def fetch_podcasts_by_keyword(keyword: str):
     if none, displays message.
     '''
 
+    keyword_title_matches = []
     podcast_episode_list = fetch_all_podcasts()
 
     for episode in podcast_episode_list:
-        print(episode.title)
+        if keyword in episode.title.split():
+            keyword_title_matches.append(episode)
 
-    return keyword
+    if len(keyword_title_matches) > 0:
+        return keyword_title_matches
+    else:
+        print('No keyword title matches')
 
 
 def fetch_random_podcast():
@@ -136,8 +143,8 @@ def save(podcast_file):
 
 # RETURNING ALL PODCASTS
 #-----------------------
-episodes = fetch_all_podcasts()
-print(len(episodes))
+# episodes = fetch_all_podcasts()
+# print(len(episodes))
 
 
 # RETURNING PODCASTS BY PODCAST TITLE
@@ -150,9 +157,10 @@ print(len(episodes))
 # FETCH PODCASTS BY KEYWORD
 #-----------------------------------
 # keyword = input("Enter a keyword to search by: ").lower()
-# returned_podcast = fetch_podcasts_by_keyword(keyword)
+# returned_podcasts = fetch_podcasts_by_keyword(keyword)
 #
-# print(returned_podcast)
+# for episode in returned_podcasts:
+#     print(episode.title)
 
 
 # RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
@@ -165,7 +173,9 @@ print(len(episodes))
 
 # RETURNING PODCAST BY PODCAST TITLE WITH EPISODE TITLE OF ___
 #-------------------------------------------------------------
-# this might also come from ZSH side (?)
+# query_entered_by_the_user = input("Enter podcast name: ").lower()
+# episodes = fetch_podcasts_by_title(query_entered_by_the_user)
+# # this might also come from ZSH side (?)
 # podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
 #
 # best_match_value = 0
@@ -181,6 +191,6 @@ print(len(episodes))
 #
 #     # Used for debugging and testing how string similarity functionality works.
 #     # Currently it works *bad*.
-#     print(f"match value for {podcast_episode.title}: {match_value}")
+#     # print(f"match value for {podcast_episode.title}: {match_value}")
 #
 # print(f"{episode_with_best_match}: {match_value}")
