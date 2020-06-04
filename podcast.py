@@ -71,7 +71,6 @@ def fetch_all_podcasts():
     response = requests.get(
         "https://dev.to/api/podcast_episodes?per_page=1000")
     data = json.loads(response.text)
-    print(type(data))
     return parse_podcast_data(data)
 
 
