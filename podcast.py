@@ -15,7 +15,6 @@ from string_distance import recursive_levenshtein
 # print(recursive_levenshtein("bartek pacia", "bartk pcia"))
 # print(recursive_levenshtein("bartek pacia", "bartek paci"))
 
-
 class PodcastEpisode:
     '''
     Represents a single podcast episode from the dev.to API.
