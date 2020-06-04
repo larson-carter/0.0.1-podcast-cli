@@ -93,17 +93,22 @@ def save(podcast_file):
 
 
 # TESTING CODE BELOW
+#--------------------
+# uncomment relevant piece to test functionality
 
+# GENERATING RANDOM PODCAST
+#----------------------------
+# episode = fetch_random_podcast()
+# print(episode.title)
 
+# RETURNING PODCAST BY PODCAST TITLE AND/OR EPISODE NAME
+#------------------------------------------------------
 # this will come from ZSH, I guess. For now, let's just use input().
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # this might also come from ZSH side (?)
 # podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
 
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
-
-episode = fetch_random_podcast()
-print(episode.title)
 
 # best_match_value = 0
 # episode_with_best_match = None
@@ -119,6 +124,5 @@ print(episode.title)
 #     # Used for debugging and testing how string similarity functionality works.
 #     # Currently it works *bad*.
 #     print(f"match value for {podcast_episode.title}: {match_value}")
-#
 #
 # print(f"{episode_with_best_match}: {match_value}")
