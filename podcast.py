@@ -1,9 +1,11 @@
 import requests
 import json
 import random
-
-from typing          import List
+import shutil
+import os
+from typing import List
 from string_distance import recursive_levenshtein
+
 
 # Link to the branch where work on this is happening: https://github.com/MLH-Fellowship/0.0.1-podcast-cli/tree/feat/use-python
 
@@ -14,6 +16,9 @@ from string_distance import recursive_levenshtein
 # This whole thing might also be unnecessary. Consulting with The Shell Guys advised.
 # print(recursive_levenshtein("bartek pacia", "bartk pcia"))
 # print(recursive_levenshtein("bartek pacia", "bartek paci"))
+
+# base_dir that stores all download images
+IMG_DIR = "./images"
 
 class PodcastEpisode:
     '''
@@ -115,6 +120,7 @@ def fetch_random_podcast():
 
     return random_episode
 
+
 def most_recent_podcast(list):
     '''
     returns most recent podcast in a list of PodcastEpisodes
@@ -131,30 +137,80 @@ def save(podcast_file):
     pass
 
 
+def path_to_filepath(short_path: str, img_format="jpg", base_img_dir=IMG_DIR)-> str:
+    """:arg
+    Given a dev.to short path, returns
+    (1) a folder name (so it can be created) and
+    (2) the relative full filepath.
+
+    Given path = "/elixirmix/emx-095-adopting-elixir-at-findhotel-with-fernando-hamasaki-de-amorim"
+    Returns
+    ('./images/elixirmix',
+    './images/elixirmix/emx-095-adopting-elixir-at-findhotel-with-fernando-hamasaki-de-amorim.jpg')
+    """
+
+    path_components = short_path.strip("/").split("/")
+    folder = f"{base_img_dir}/{path_components[0]}"
+    filename = "-".join(path_components[1:])
+    filepath_out = f"{folder}/{filename}.{img_format}"
+
+    return folder, filepath_out
+
+
+
+def download_img(short_path: str, img_url: str):
+    """:arg
+    file_path: str - filepath where image is to be stored
+    img_url: str - URL that points to the images
+
+    Returns nothing
+    """
+    img_format = img_url.split(".")[-1]
+    folder, file_path = path_to_filepath(short_path, img_format)
+
+    if not os.path.exists(IMG_DIR):
+        os.makedirs(IMG_DIR)
+
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    r = requests.get(img_url, stream=True)
+    if r.status_code == 200:
+        # Set decode_content value to True, otherwise the downloaded image file's size will be zero.
+        r.raw.decode_content = True
+
+        # Open a local file with wb ( write binary ) permission.
+        with open(f"{file_path}", 'wb') as f:
+            shutil.copyfileobj(r.raw, f)
+            print("Image successfully download:", file_path)
+
+
+
+
 # TESTING CODE BELOW- uncomment relevant piece to test functionality
-#--------------------
+# --------------------
 
 # GENERATING RANDOM PODCAST
-#----------------------------
+# ----------------------------
 # episode = fetch_random_podcast()
 # print(episode.title)
 
 
 # RETURNING ALL PODCASTS
-#-----------------------
+# -----------------------
 # episodes = fetch_all_podcasts()
 # print(len(episodes))
 
 
 # RETURNING PODCASTS BY PODCAST TITLE
-#------------------------------------
+# ------------------------------------
 # this will come from ZSH, I guess. For now, let's just use input().
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 
 
 # FETCH PODCASTS BY KEYWORD
-#-----------------------------------
+# -----------------------------------
 # keyword = input("Enter a keyword to search by: ").lower()
 # returned_podcasts = fetch_podcasts_by_keyword(keyword)
 #
@@ -163,7 +219,7 @@ def save(podcast_file):
 
 
 # RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
-#--------------------------------------------------
+# --------------------------------------------------
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 # most_recent_episode = most_recent_podcast(episodes)
@@ -171,7 +227,7 @@ def save(podcast_file):
 
 
 # RETURNING PODCAST BY PODCAST TITLE WITH EPISODE TITLE OF ___
-#-------------------------------------------------------------
+# -------------------------------------------------------------
 # query_entered_by_the_user = input("Enter podcast name: ").lower()
 # episodes = fetch_podcasts_by_title(query_entered_by_the_user)
 # # this might also come from ZSH side (?)
@@ -193,3 +249,9 @@ def save(podcast_file):
 #     # print(f"match value for {podcast_episode.title}: {match_value}")
 #
 # print(f"{episode_with_best_match}: {match_value}")
+
+# DOWNLOAD IMAGE
+# -------------------------------------------------------------
+# path = "/elixirmix/emx-095-adopting-elixir-at-findhotel-with-fernando-hamasaki-de-amorim"
+# img_url = "https://dev-to-uploads.s3.amazonaws.com/uploads/podcast/image/78/0bff2d54-e4e4-4f3d-b9cc-6c67cdd195f4.jpg"
+# download_img(path, img_url)
