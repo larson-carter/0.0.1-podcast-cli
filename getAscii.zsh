@@ -20,9 +20,9 @@ then
   $dirname="."
 fi
 
-echo "File without format: $file"
-echo "Filename: $filename"
-echo "Dirname: $dirname"
+# echo "File without format: $file"
+# echo "Filename: $filename"
+# echo "Dirname: $dirname"
 
 if [[ $(file -b $1) =~ JPEG ]];  
 then 
