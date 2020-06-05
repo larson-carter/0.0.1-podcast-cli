@@ -1,6 +1,6 @@
 # DEV Podcast CLI
 
-**A zsh plugin to manage podcasts from the DEV podcast directory. ****
+**A zsh plugin to manage podcasts from the DEV podcast directory. **
 
 This was developed as part of the MLH Fellowship Kickoff Hackathon.
 
@@ -9,6 +9,8 @@ This was developed as part of the MLH Fellowship Kickoff Hackathon.
 * Search the DEV podcast directory for a specific keyword, get a random podcast, or browse the DEV podcast directory page-by-page
 * Download podcasts
 * Display the album artwork as an ASCII image
+
+![Album Artwork Screenshot](https://raw.githubusercontent.com/MLH-Fellowship/0.0.1-podcast-cli/master/screenshots/podcast%20info%20screenshot.png)
 
 ## Installation
 
