@@ -1,25 +1,41 @@
-### Usage of podcast.zsh
+# DEV Podcast CLI
 
-**Usage**: `zsh podcast.zsh <DEV.TO_URL> <OPTIONAL:MP3_DIR>`
+**A zsh plugin to manage podcasts from the DEV podcast directory. ****
 
-**Specifying only `DEV.TO_URL`**
+This was developed as part of the MLH Fellowship Kickoff Hackathon.
 
-Note that there is 1 compulsory and 1 optional argument as of now.
+## Features
 
-Specifying `DEV.TO_URL` is compulsory. If `MP3_DIR` is not specified, it will default to saving mp3_files in `./mp3_files`
+* Search the DEV podcast directory for a specific keyword, get a random podcast, or browse the DEV podcast directory page-by-page
+* Download podcasts
+* Display the album artwork as an ASCII image
+
+## Installation
+
+1. Clone the repository
+2. Install the dependencies
+3. `$ source podcast.plugin.zsh`
+4. To get more information, `$ podcast -h`
+
+## Usage
 
 ```
-zsh podcast.zsh https://dev.to/iphreaks/ips-292-evolving-apps-and-hacking-around-with-eric-crichlow
+Usage: podcast <option>
+-h, --help
+	Show help information
+search <search_term>
+	Search recent podcasts for the search term
+imfeelinglucky
+	Show a random podcast episode
+podcast download <short_url> <?download_dir>
+	Download a podcast
+	If the download directory is missing, this will download to ./podcasts
+info <short_url>
+	Display the show art and any metadata
+list <pg_num> <pg_size>
+	Browse the list of podcasts page by page
 ```
 
-**Specifying both `DEV.TO_URL` and `MP3_DIR`**
+## Implementation
 
-To save the mp3 file in the default dir, `./mp3_files`:
-```
-zsh podcast.zsh https://dev.to/iphreaks/ips-292-evolving-apps-and-hacking-around-with-eric-crichlow
-```
-
-To save the mp3 file in a custom dir, append the dir name at the end of the command:
-```
-zsh podcast.zsh https://dev.to/iphreaks/ips-292-evolving-apps-and-hacking-around-with-eric-crichlow ./my_custom_dir
-```
+The CLI was implemented in `podcast.plugin.zsh`. This is a front-end that delegates out to `podcast.py` and `download.py`. `podcast.py` handles interaction with the DEV podcast API, as well as displaying ASCII album artwork. `download.py` handles downloading podcasts. 
