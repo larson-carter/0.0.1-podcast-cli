@@ -6,19 +6,8 @@ import shutil
 import os
 
 from typing import List
-from string_distance import recursive_levenshtein
 from download        import download_podcast
 
-
-# Link to the branch where work on this is happening: https://github.com/MLH-Fellowship/0.0.1-podcast-cli/tree/feat/use-python
-
-
-# This is how Levensthein work. It falls short when comparing longer strings (e.g titles of podcasts).
-# I think string matching can be improved (or rather fixed) using Dice Coefficient.
-# This npm module I use (and it works perfectly) uses Dice Coefficient: https://www.npmjs.com/package/string-similarity.
-# This whole thing might also be unnecessary. Consulting with The Shell Guys advised.
-# print(recursive_levenshtein("bartek pacia", "bartk pcia"))
-# print(recursive_levenshtein("bartek pacia", "bartek paci"))
 
 # base_dir that stores all download images
 DIR = os.path.expanduser("~/podcasts")
@@ -275,15 +264,6 @@ def podcast_info(short_path: str):
         print(INFO_WIDTH * "=")
 
 
-    # folder, file_path = path_to_filepath(short_path)
-    # # print(folder)
-    # # print(file_path)
-    # # if not os.path.exists(file_path):
-    # #     download_podcast(short_path, file_path)
-    #
-    # # COMMAND = f"zsh getAscii.zsh {file_path}"
-    # # os.system(COMMAND)
-
 if __name__ == "__main__":
 
     if not os.path.exists("~/podcasts"):
@@ -327,72 +307,3 @@ if __name__ == "__main__":
     elif sys.argv[1] == "info":
         podcast_info(sys.argv[2])
 
-
-# TESTING CODE BELOW- uncomment relevant piece to test functionality
-# --------------------
-
-# GENERATING RANDOM PODCAST
-# ----------------------------
-# episode = fetch_random_podcast()
-# print(episode.title)
-
-
-# RETURNING ALL PODCASTS
-# -----------------------
-# episodes = fetch_all_podcasts()
-# print(len(episodes))
-
-
-# RETURNING PODCASTS BY PODCAST TITLE
-# ------------------------------------
-# this will come from ZSH, I guess. For now, let's just use input().
-# query_entered_by_the_user = input("Enter podcast name: ").lower()
-# episodes = fetch_podcasts_by_title(query_entered_by_the_user)
-
-
-# FETCH PODCASTS BY KEYWORD
-# -----------------------------------
-# keyword = input("Enter a keyword to search by: ").lower()
-# returned_podcasts = fetch_podcasts_by_keyword(keyword)
-#
-# for episode in returned_podcasts:
-#     print(episode.title)
-
-
-# RETURNING MOST RECENT PODCAST BY ${PODCAST TITLE}
-# --------------------------------------------------
-# query_entered_by_the_user = input("Enter podcast name: ").lower()
-# episodes = fetch_podcasts_by_title(query_entered_by_the_user)
-# most_recent_episode = most_recent_podcast(episodes)
-# print(most_recent_episode.title)
-
-
-# RETURNING PODCAST BY PODCAST TITLE WITH EPISODE TITLE OF ___
-# -------------------------------------------------------------
-# query_entered_by_the_user = input("Enter podcast name: ").lower()
-# episodes = fetch_podcasts_by_title(query_entered_by_the_user)
-# # this might also come from ZSH side (?)
-# podcast_episode_name = input("Enter podcast episode name (empty input will return all): ").lower()
-#
-# best_match_value = 0
-# episode_with_best_match = None
-#
-# for podcast_episode in episodes:
-#     match_value = recursive_levenshtein(
-#         podcast_episode_name, podcast_episode.title)
-#
-#     if match_value > best_match_value:
-#         best_match_value = match_value
-#         episode_with_best_match = podcast_episode
-#
-#     # Used for debugging and testing how string similarity functionality works.
-#     # Currently it works *bad*.
-#     # print(f"match value for {podcast_episode.title}: {match_value}")
-#
-# print(f"{episode_with_best_match}: {match_value}")
-
-# DOWNLOAD IMAGE
-# -------------------------------------------------------------
-# path = "/elixirmix/emx-095-adopting-elixir-at-findhotel-with-fernando-hamasaki-de-amorim"
-# img_url = "https://dev-to-uploads.s3.amazonaws.com/uploads/podcast/image/78/0bff2d54-e4e4-4f3d-b9cc-6c67cdd195f4.jpg"
-# download_img(path, img_url)
