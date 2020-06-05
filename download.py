@@ -42,7 +42,7 @@ def create_dir(directory):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 1:
+    if len(sys.argv) != 2:
         print("A path argument is required to run the program")
         exit(1)
     directory = os.path.expanduser("~/podcasts/mp3_files")

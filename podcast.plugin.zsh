@@ -7,12 +7,6 @@ function _podcast_download() {
     python3 $pyscript $@
 }
 
-# Display the show art and any metadata
-#
-# $1 - the short url. Appending this to "dev.to" produces the final url of the podcast
-function _podcast_info() {
-}
-
 # Invoke the podcast python script with the arguments passed into this function
 function _podcast_invoke_python() {
     local pyscript="${0:A:h}/podcast.py"
@@ -50,7 +44,7 @@ function podcast() {
                 return 1
             fi
 
-            _podcast_info $2
+            _podcast_invoke_python $@
             ;;
         list)
             if [[ $2 == '' ]]
