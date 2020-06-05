@@ -1,6 +1,6 @@
 # DEV Podcast CLI
 
-**A zsh plugin to manage podcasts from the DEV podcast directory. **
+**A zsh plugin to manage podcasts from the DEV podcast directory.**
 
 This was developed as part of the MLH Fellowship Kickoff Hackathon.
 
